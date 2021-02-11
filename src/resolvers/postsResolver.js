@@ -1,5 +1,16 @@
 import { AuthenticationError } from 'apollo-server';
 
+const PostLabels = {
+  docs: 'posts',
+  limit: 'perPage',
+  nextPage: 'next',
+  prevPage: 'prev',
+  meta: 'paginator',
+  page: 'currentPage',
+  pagingCounter: 'slNo',
+  totalDocs: 'totalPosts',
+  totalPages: 'totalPages',
+};
 export default {
   Query: {
     post: async (parent, { id }, { models: { postsModel }, me }, info) => {
@@ -17,6 +28,62 @@ export default {
       const posts = await postsModel.find({ }).exec();
       return posts;
     },
+    getPostsWithPagination: async (_, {
+      page,
+      limit,
+      user_id
+  }, { models: { postsModel }, me }) => {
+
+      const options = {
+          page: page || 1,
+          limit: limit || 10,
+          customLabels: PostLabels,
+          sort: {
+              title: -1
+          },
+      };
+
+      let query = {};
+      if (user_id) {
+          query = {
+              author: user_id
+          }
+      }
+
+      let posts = await postsModel.paginate(query, options);
+
+      return posts;
+  },
+  getMyPostsWithPagination: async (_, {
+    page,
+    limit
+}, { models: { postsModel }, me }) => {
+
+    const options = {
+        page: page || 1,
+        limit: limit || 10,
+        customLabels: PostLabels,
+        sort: {
+            createdAt: -1
+        },
+    };
+
+    let posts = await postsModel.paginate({
+        author: user.id
+    }, options);
+
+    return posts;
+},
+poster:async(_,{first,skip},{ models: { postsModel }, me })=>{
+  const total=await postsModel.estimatedDocumentCount()
+  console.log(total)
+ const post= await postsModel.find({}).sort({"title":1}).skip(skip).limit(first).exec()
+ while (await post.hasNext()) {
+  console.log(await post.next());
+}
+ return post
+}
+    
   },
   Mutation: {
     createPost: async (parent, { title, content }, { models: { postsModel }, me }, info) => {

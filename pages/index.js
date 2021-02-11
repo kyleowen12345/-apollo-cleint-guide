@@ -25,18 +25,31 @@ export const MyQuery = gql`
 }
 `;
 export const NoUserQuery = gql`
-  query NoUserQuery {
-  posts{
-    id
-    title
-    content
+  query NoUserQuery($page:Int,$limit:Int){
+  getPostsWithPagination(page:$page,limit:$limit){
+    posts{
+      title
+      author{
+        name
+      }
+    }
+    paginator{
+      totalPosts
+      hasPrevPage
+      hasNextPage
+      next
+      prev
+      perPage
+      slNo
+      currentPage
+    }
   }
 }
 `;
 export default function Home({token,initialApolloState}) {
  
   const router = useRouter()
-  const { data, loading,error } = useQuery( MyQuery );
+  const { data, loading,error } = useQuery( NoUserQuery,{variables:{page:1,limit:3}} );
  const decoded=token && jwtDecode(token)
  console.log(decoded)
   console.log(data)
@@ -50,6 +63,7 @@ export default function Home({token,initialApolloState}) {
   // const {trial}=initialApolloState.readQuery({
   //   query:
   // })
+  console.log(data)
   return (
     <div>
       {loading && <span>loading...</span>}
@@ -57,17 +71,17 @@ export default function Home({token,initialApolloState}) {
       <p>{token}</p>
     
     
-      {data.posts.map(i=>{
+      {/* {data.posts.map(i=>{
         return(
           <div key={i.id}>
             <h1>{i.title}</h1>
             <p>{i.content}</p>
-            <p>Author {i.author.name}</p>
+            <p>Author {i.author.name} {i.author.id}</p>
             {decoded.id ===  i.author.id &&  <Link href={`/updatepost/${i.id}`}>Update</Link>}
           </div>
 
         )
-      })}
+      })} */}
       {
         token &&<button onClick={handleLogout}>Logout</button>
       }
