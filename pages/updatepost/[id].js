@@ -40,13 +40,16 @@ const handleSubmit=async(e)=>{
    }
 
     return(
-        <div>
-         <form onSubmit={handleSubmit}>
-            <input onChange={(e)=>setTitle(e.target.value)} placeholder={"title"}/>
-            <input  onChange={(e)=>setContent(e.target.value)} placeholder={"content"}/>
-            {loading && <p>Loading</p>}
-            {error && <p>error</p>}
-            <button type={"submit"}>Update</button>
+        <div className="flex justify-center">
+         <form onSubmit={handleSubmit} className="m-8 p-12 w-3/4 text-center rounded-2xl bg-black text-black max-w-lg  border-white">
+         <div className="flex justify-center flex-col items-center">
+         <h1 className="p-5 text-3xl text-white font-mono">Update Post</h1>
+            <input onChange={(e)=>setTitle(e.target.value)} placeholder={"title"}  className="m-3 p-3 w-2/3 font-mono min-w-full md:min-w-0  rounded-2xl"/>
+            <input  onChange={(e)=>setContent(e.target.value)} placeholder={"content"}  className="m-3 p-3 w-2/3 font-mono min-w-full md:min-w-0  rounded-2xl"/>
+            {loading && <p className="p-2 text-white font-mono">Loading</p>}
+            {error && <p className="p-2 text-white font-mono">error</p>}
+            <button type={"submit"} className="text-black p-2 m-3 p-2 rounded-2xl bg-white w-1/3 font-mono min-w-full md:min-w-0">Update</button>
+            </div>
          </form>
         </div>
     )

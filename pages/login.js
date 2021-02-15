@@ -2,6 +2,8 @@ import { useMutation, gql } from "@apollo/client"
 import { useRouter } from 'next/router'
 import {useState} from 'react'
 import cookie from "js-cookie";
+import Link from 'next/link'
+import Head from 'next/head'
 
 
 const LOGIN = gql`
@@ -26,7 +28,7 @@ export default function Login() {
     router.push('/')
    }
   
-    } catch (error) {
+    } catch (err) {
       console.log(error)
     }
     
@@ -34,14 +36,24 @@ export default function Login() {
 console.log(error?.message)
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-     <input onChange={e=>setName(e.target.value)}/>
-     <input onChange={e=>setPassword(e.target.value)}/>
-     { error && <p>error</p> }
-     {loading ? <p>Loading...</p>:<button type="submit">
+    <div className="flex justify-center">
+       <Head>
+        <title>Login</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      </Head>
+      <form onSubmit={handleSubmit} className="m-8 p-12 w-3/4 text-center rounded-2xl bg-black text-black max-w-lg border border-white">
+        <div className="flex justify-center flex-col items-center">
+        <h1 className="p-5 text-3xl text-white font-mono">Vercel</h1>
+        <input onChange={e=>setName(e.target.value)} className="m-3 p-3 w-2/3 font-mono min-w-full md:min-w-0  rounded-2xl" placeholder={"Name"}/>
+     <input type="password" onChange={e=>setPassword(e.target.value)} className="m-3 p-3 w-2/3 font-mono min-w-full md:min-w-0  rounded-2xl" placeholder={"Password"} />
+     { error && <p  className="p-2 text-white font-mono">error</p> }
+     {loading ? <p  className="p-2 text-white font-mono">Loading...</p>:<button type="submit" className="text-black p-2 m-3 p-2 rounded-2xl bg-white w-1/3 font-mono min-w-full md:min-w-0">
        Login
      </button>}
+     <p  className="text-white font-mono">Create Account? </p>
+     <p className="underline  text-white font-mono"><Link href="/signup" >Sign-up</Link></p>
+        </div>
+     
   
       </form>
      
@@ -49,16 +61,3 @@ console.log(error?.message)
     </div>
   );
 }
-// export async function getStaticProps() {
-//   const apolloClient = initializeApollo();
-
-//   await apolloClient.query({
-//     query: MyQuery,
-//   });
-
-//   return {
-//     props: {
-//       initialApolloState: apolloClient.cache.extract(),
-//     },
-//   };
-// }

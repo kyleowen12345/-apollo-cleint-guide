@@ -22,7 +22,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx"
-, "src/schema.js"  ],
+, "src/schema.js", "components/HomePage.jsx"  ],
   "exclude": [
     "node_modules"
   ]

@@ -14,23 +14,21 @@ const PostLabels = {
 export default {
   Query: {
     post: async (parent, { id }, { models: { postsModel }, me }, info) => {
-      if (!me) {
-        throw new AuthenticationError('You are not authenticated');
-      }
+      // if (!me) {
+      //   throw new AuthenticationError('You are not authenticated');
+      // }
       const post = await postsModel.findById({ _id: id }).exec();
       return post;
     },
     posts: async (parent, args, { models: { postsModel }, me }, info) => {
-      // if (!me) {
-      //   throw new AuthenticationError('You are not authenticated');
-      // }
-      
+     
+
       const posts = await postsModel.find({ }).exec();
       return posts;
     },
     getPostsWithPagination: async (_, {
       page,
-      limit,
+      limit=2,
       user_id
   }, { models: { postsModel }, me }) => {
 

@@ -17,10 +17,14 @@ export default {
   },
   Mutation: {
     createUser: async (parent, { name, password }, { models: { userModel } }, info) => {
+      if(!name) throw new AuthenticationError('Please create a name')
+      if(!password) throw new AuthenticationError('Please create a password')
       const user = await userModel.create({ name, password });
       return user;
     },
     login: async (parent, { name, password }, { models: { userModel } }, info) => {
+      if(!name)  throw new AuthenticationError('Please enter a name')
+      if(!password) throw new AuthenticationError('Please enter a password')
       const user = await userModel.findOne({ name }).exec();
 
       if (!user) {
