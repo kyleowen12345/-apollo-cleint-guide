@@ -9,9 +9,6 @@ import userModel from '../../models/userModel'
 import postsModel from '../../models/postsModel'
 import commentsModel from '../../models/commentsModel'
 
-
-
-
 dotenv.config();
 
 const getUser = async (req) => {
