@@ -24,6 +24,28 @@ export const MyQuery=gql`
   }
 }
 `
+export async function getStaticProps({params}) {
+  const apolloClient = initializeApollo();
+  await apolloClient.query({
+      query:POST,
+      variables:{id:params.id}
+    });
+    const initialApolloState=apolloClient.cache.extract()
+  return {
+    props: {initialApolloState},
+    revalidate: 1,
+  }
+}
+export async function getStaticPaths() {
+  const apolloClient = initializeApollo();
+ const {data}= await apolloClient.query({
+      query:MyQuery,
+    });
+    
+    const paths=data?.posts.map(i=>({
+       params :{id:i.id}}))
+       return { paths, fallback: false }
+}
 
 
 export default function ViewPost({initialApolloState}){
@@ -41,25 +63,3 @@ export default function ViewPost({initialApolloState}){
     )
 }
 
-export async function getStaticProps({params}) {
-    const apolloClient = initializeApollo();
-    await apolloClient.query({
-        query:POST,
-        variables:{id:params.id}
-      });
-      const initialApolloState=apolloClient.cache.extract()
-    return {
-      props: {initialApolloState},
-      revalidate: 1,
-    }
-  }
-  export async function getStaticPaths() {
-    const apolloClient = initializeApollo();
-   const {data}= await apolloClient.query({
-        query:MyQuery,
-      });
-      
-      const paths=data?.posts.map(i=>({
-         params :{id:i.id}}))
-         return { paths, fallback: false }
-  }
