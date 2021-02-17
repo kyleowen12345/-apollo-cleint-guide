@@ -14,7 +14,7 @@ import {
   function createApolloClient() {
     return new ApolloClient({
       ssrMode: typeof window === "undefined",
-      uri:  'https://apollo-cleint-guide.vercel.app/api/graphql',
+      uri:  'https://apollo-cleint-guide-734hxeh7b.vercel.app/api/graphql',
       cache: new InMemoryCache({
         typePolicies:{
           Post:{
