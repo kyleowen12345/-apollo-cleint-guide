@@ -1,7 +1,7 @@
 import { useMutation, gql } from "@apollo/client"
 import {useState} from 'react'
 import { useRouter } from 'next/router'
-
+import Link from 'next/link'
 
 const UPDATE_POST=gql`
 mutation UpdatePost($title:String!,$content:String!,$id:ID!){
@@ -42,6 +42,7 @@ const handleSubmit=async(e)=>{
     return(
         <div className="flex justify-center">
          <form onSubmit={handleSubmit} className="m-8 p-12 w-3/4 text-center rounded-2xl bg-black text-black max-w-lg  border-white">
+         <p className="p-5 text-white"><Link href={`/`}>Home</Link> </p>
          <div className="flex justify-center flex-col items-center">
          <h1 className="p-5 text-3xl text-white font-mono">Update Post</h1>
             <input onChange={(e)=>setTitle(e.target.value)} placeholder={"title"}  className="m-3 p-3 w-2/3 font-mono min-w-full md:min-w-0  rounded-2xl"/>

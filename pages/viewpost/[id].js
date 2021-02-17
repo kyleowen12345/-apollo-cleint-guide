@@ -30,7 +30,7 @@ export default function ViewPost({initialApolloState}){
     const router = useRouter()
     const {id}=router.query
     const {data,error}=useQuery(POST,{variables:{id:id}})
-    console.log(initialApolloState)
+    console.log(data.post)
   const {title,content}=data.post
     return (
         <div>
@@ -63,4 +63,3 @@ export async function getStaticProps({params}) {
          params :{id:i.id}}))
          return { paths, fallback: false }
   }
-  
